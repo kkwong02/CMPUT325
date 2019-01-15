@@ -20,7 +20,7 @@
     (if (OR (= 0 (len L)) (= 1 (len L)) )
         T
         (if (< (first L) (first(rest L)))
-            (and T (issorted (rest L)))
+            (issorted (rest L))
             NIL
         )
     )

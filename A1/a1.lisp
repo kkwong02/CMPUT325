@@ -53,11 +53,24 @@
     )
 )
 
-; (getLast L)
+; (getlast L)
 ; A helper function that gets the last element of a list
-(defun (getLast L)
+(defun getlast (L)
+    (cond 
+        ((= (len L) 1) (car L))
+        ((= (len L) 0) NIL)
+        (T (getlast (cdr L))) 
+    )
 )
 
 ; (palindrome (L) )
 ; This function checks if a list of characters is a palindrome by recursively checking the 
 ; first and last characters.
+(defun palindrome (L)
+    (cond 
+        ; length = 0 or length = 1 ==> T
+        ((or (= (len L) 0) (= (len L) 1)) T)
+        ((eq (car L) (getlast L)) (and T (palindrome (splice L))))
+        (T NIL)
+    )
+)

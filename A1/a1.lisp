@@ -2,7 +2,7 @@
 ; CCID kskwong Student name Kirsten Kwong
 
 ;QUESTION 1 issorted
-; (len(L))
+; (len L)
 ; This function counts the number of items in a list, L and returns it.
 ; Taken (and renamed) from in-class examples.
 (defun len (L)
@@ -12,12 +12,12 @@
     )
 )
 
-; (issorted(L))
+; (issorted L)
 ; This function checks if a list, L, is sorted in ascending order.
 ; The function will return T if sorted, else it will return NIL
 ; A list with less than 2 elements is considered sorted.
 (defun issorted (L)
-    (if (OR (NULL L) (= 1 (len L)) )
+    (if (OR (null L) (= 1 (len L)) )
         T
         (if (< (car L) (cadr L))
             (and T (issorted (rest L)))
@@ -27,7 +27,7 @@
 )
 
 ; QUESTION 2 numbers
-; (numbers (N))
+; (numbers N)
 ; this function produces a list of integers from 1 up to N, given a non negative
 ; integer. the function will return NIL if the number given is less than 1.
 (defun numbers (N)
@@ -42,7 +42,7 @@
 )
 
 ; QUESTION 3 palindrome
-; (splice (L))
+; (splice L)
 ; A helper function for splicing a list, L.
 ; Removes the first and last elements of a list. Will return NIL if less than 3 elements.
 (defun splice (L)
@@ -58,28 +58,30 @@
 (defun getlast (L)
     (cond 
         ((= (len L) 1) (car L))
-        ((NULL L) NIL)
+        ((null L) NIL)
         (T (getlast (cdr L))) 
     )
 )
 
-; (palindrome (L) )
+; (palindrome L )
 ; This function checks if a list of characters is a palindrome by recursively checking the 
 ; first and last characters.
 (defun palindrome (L)
     (cond 
         ; length = 0 or length = 1 ==> T
-        ((or (NULL L)  (= (len L) 1)) T)
+        ((or (null L)  (= (len L) 1)) T)
         ((eq (car L) (getlast L)) (and T (palindrome (splice L))))
         (T NIL)
     )
 )
 
 ; QUESTION 4 replace1 and replace2
-
+; (replace Atom1 Atom2 List)
 (defun replace1 (Atom1 Atom2 List)
     (cond
-        ((= (len List) ) )
+        ((null List) NIL)
+        ((equal (car List) Atom1) (cons Atom2 (replace1 Atom1 Atom2 (cdr List))))
+        (T (cons (car List) (replace1 Atom1 Atom2 (cdr List))))
     )
 )
 

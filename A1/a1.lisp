@@ -19,7 +19,7 @@
 (defun issorted (L)
     (if (OR (= 0 (len L)) (= 1 (len L)) )
         T
-        (if (< (car L) (cadr L)))
+        (if (< (car L) (cadr L))
             (and T (issorted (rest L)))
             NIL
         )

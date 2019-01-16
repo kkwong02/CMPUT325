@@ -17,7 +17,7 @@
 ; The function will return T if sorted, else it will return NIL
 ; A list with less than 2 elements is considered sorted.
 (defun issorted (L)
-    (if (OR (= 0 (len L)) (= 1 (len L)) )
+    (if (OR (NULL L) (= 1 (len L)) )
         T
         (if (< (car L) (cadr L))
             (and T (issorted (rest L)))
@@ -58,7 +58,7 @@
 (defun getlast (L)
     (cond 
         ((= (len L) 1) (car L))
-        ((= (len L) 0) NIL)
+        ((NULL L) NIL)
         (T (getlast (cdr L))) 
     )
 )
@@ -69,8 +69,20 @@
 (defun palindrome (L)
     (cond 
         ; length = 0 or length = 1 ==> T
-        ((or (= (len L) 0) (= (len L) 1)) T)
+        ((or (NULL L)  (= (len L) 1)) T)
         ((eq (car L) (getlast L)) (and T (palindrome (splice L))))
         (T NIL)
     )
+)
+
+; QUESTION 4 replace1 and replace2
+
+(defun replace1 (Atom1 Atom2 List)
+    (cond
+        ((= (len List) ) )
+    )
+)
+
+(defun replace2 (Atom1 Atom2 List)
+
 )

@@ -77,6 +77,8 @@
 
 ; QUESTION 4 replace1 and replace2
 ; (replace Atom1 Atom2 List)
+; This function replace occurances of Atom1 with Atom2 in a list
+; It does not recursively replace atoms in nested lists.
 (defun replace1 (Atom1 Atom2 List)
     (cond
         ((null List) NIL)
@@ -85,6 +87,39 @@
     )
 )
 
+; (replace Atom1 Atom2 List)
+; This function replaces occurances of Atom1 with Atom2 in a list.
+; Unlike replace1, this function will recursive replace atoms in nested lists.
 (defun replace2 (Atom1 Atom2 List)
-
+    (cond
+        ((null List) NIL)
+        ((not (atom (car List))) (cons (replace2 Atom1 Atom2 (car List)) (replace2 Atom1 Atom2 (cdr List))))
+        ((equal (car List) Atom1) (cons Atom2 (replace2 Atom1 Atom2 (cdr List))))
+        (T (cons (car List) (replace2 Atom1 Atom2 (cdr List))))
+    )
 )
+
+; QUESTION 5 common
+; (in a L)
+; A helper function that checks if an atom, A, is in list, L.
+; returns T if a in L, else NIL
+(defun in (a L)
+    (cond 
+        ((null L) NIL)
+        ((equal a (car L)) T)
+        (T (in a (cdr L)))
+    )
+)
+
+; (common L1 L2)
+; This function counts how many atoms L1 and L2 have in common.
+(defun common (L1 L2)
+    (cond
+        ((null L1) 0)
+        ((in (car L1) L2) (+ 1 (common (cdr L1) L2)))
+        (T (common (cdr L1) L2))
+    )
+)
+
+; QUESTION 6 Setcover
+

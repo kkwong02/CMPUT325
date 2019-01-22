@@ -2,22 +2,12 @@
 ; CCID kskwong Student name Kirsten Kwong
 
 ;QUESTION 1 issorted
-; (len L)
-; This function counts the number of items in a list, L and returns it.
-; Taken (and renamed) from in-class examples.
-(defun len (L)
-    (if (null L) 
-        0 
-        (+  (len (cdr L)) 1) 
-    )
-)
-
 ; (issorted L)
 ; This function checks if a list, L, is sorted in ascending order.
 ; The function will return T if sorted, else it will return NIL
 ; A list with less than 2 elements is considered sorted.
 (defun issorted (L)
-    (if (OR (null L) (= 1 (len L)) )
+    (if (OR (null L) (null cdr(L)) )
         T
         (if (< (car L) (cadr L))
             (and T (issorted (rest L)))
@@ -42,11 +32,21 @@
 )
 
 ; QUESTION 3 palindrome
+; (len L)
+; This function counts the number of items in a list, L and returns it.
+; Taken (and renamed) from in-class examples.
+(defun len (L)
+    (if (null L) 
+        0 
+        (+  (len (cdr L)) 1) 
+    )
+)
+
 ; (splice L)
 ; A helper function for splicing a list, L.
 ; Removes the first and last elements of a list. Will return NIL if less than 3 elements.
 (defun splice (L)
-    (cond
+    (cond 
         ((< (len L) 3) NIL)
         ((= (len L) 3) (list (cadr L)))
         (T (cons (cadr L) (splice (cdr L))))
@@ -57,7 +57,7 @@
 ; A helper function that gets the last element of a list
 (defun getlast (L)
     (cond 
-        ((= (len L) 1) (car L))
+        ((null (cdr L)) (car L))
         ((null L) NIL)
         (T (getlast (cdr L))) 
     )
@@ -69,7 +69,7 @@
 (defun palindrome (L)
     (cond 
         ; length = 0 or length = 1 ==> T
-        ((or (null L)  (= (len L) 1)) T)
+        ((or (null L)  (null (cdr L))) T)
         ((eq (car L) (getlast L)) (and T (palindrome (splice L))))
         (T NIL)
     )
@@ -100,26 +100,42 @@
 )
 
 ; QUESTION 5 common
-; (in a L)
-; A helper function that checks if an atom, A, is in list, L.
-; returns T if a in L, else NIL
-(defun in (a L)
-    (cond 
-        ((null L) NIL)
-        ((equal a (car L)) T)
-        (T (in a (cdr L)))
-    )
-)
 
 ; (common L1 L2)
 ; This function counts how many atoms L1 and L2 have in common.
 (defun common (L1 L2)
     (cond
         ((null L1) 0)
-        ((in (car L1) L2) (+ 1 (common (cdr L1) L2)))
+        ((member (car L1) L2) (+ 1 (common (cdr L1) L2)))
         (T (common (cdr L1) L2))
     )
 )
 
 ; QUESTION 6 Setcover
 
+; (findFirst N S)
+; A helper function that finds the largest subset.
+; if all are equal, it returns the first (left-most) subset.
+; N is the length of the current largest subset.
+; S is a list of subsets.
+(defun findFirst (N S) 
+
+)
+
+; (findRest N S)
+; A helper function finds subsets that fit in setcover.
+; This function works by finding the subset with the 
+; least amount of items in common with the
+(defun findRest (current N S)
+
+)
+
+; (setCover N S)
+; This function finds the set cover of a set of numbers from 1 to N
+; given a list of subsets, S
+(defun setcover (N S)
+    ; combine the largest subset with everything else.
+    (let (firstItem (findFirst N S) 
+        (findRest firstItem N S)
+    )
+)

@@ -23,11 +23,7 @@
 (defun numbers (N)
     (if (< N 1)
         NIL
-        
-        (if (= N 1)
-            (list 1) 
-            (cons (numbers (- N 1)) N)
-        )
+        (append (numbers (- N 1)) (list N))
     )
 )
 
@@ -118,34 +114,11 @@
 
 ; QUESTION 6 Setcover
 
-; (findFirst N S)
-; A helper function that finds the largest subset.
-; if all are equal, it returns the first (left-most) subset.
-; N is the length of the current largest subset.
-; S is a list of subsets.
-; current is the current largest subset.
-(defun findFirst (current N S) 
-    (if (null S)
-        current
-        (let* 
-            ((firstItem (car S))
-            (lenFirst (len firstItem)))
-            (if (< N lenFirst) 
-                (findFirst firstItem lenFirst (cdr S))
-                (findFirst current N (cdr S))
-            )
-        )  
-    ) 
-)
-;; if equal, keep current (would be leftmost item)
-;; else replace with (cons (car S) (len (car s)))
-
-
 ; (findLeastCommon L1 L2)
 ; This helper function finds the set with the least common 
 ; elements of L. 
-; current: the curent set with the least common elements
-; currentCount: the count of common elements in between current and L
+; current: the curent set with the least common elements (an accumlative variable)
+; currentCount: the count of common elements in between current and L (an accumlative variable)
 ; L a set of numbers we're finding the set of least common numbers for
 ; S list of sets
 (defun findLeastCommon (current currentCount L S)
@@ -187,7 +160,7 @@
 ; A helper function finds subsets that fit in setcover.
 ; This function works by finding the subset with the 
 ; least amount of items in common with the
-; current: the current set
+; current: the current set accumlative result. what the subsets combine into
 ; subsets: the subsets that make up the set
 ; N: from setCover
 ; S: from setCover
@@ -203,11 +176,31 @@
     )
 )
 
+; (findFirst N S)
+; A helper function that finds the largest subset.
+; if all are equal, it returns the first (left-most) subset.
+; N is the length of the current largest subset.
+; S is a list of subsets.
+; current is the current largest subset.
+(defun findFirst (current N S) 
+    (if (null S)
+        current
+        (let* 
+            ((firstItem (car S))
+            (lenFirst (len firstItem)))
+            (if (< N lenFirst) 
+                (findFirst firstItem lenFirst (cdr S))
+                (findFirst current N (cdr S))
+            )
+        )  
+    ) 
+)
+
 ; (setCover N S)
 ; This function finds the set cover of a set of numbers from 1 to N
 ; given a list of subsets, S
 (defun setcover (N S)
-    (let ((firstItem (findFirst (car S) (len (car s)) S)))
+    (let ((firstItem (findFirst (car S) (len (car S)) S)))
         (findRest firstItem (cons firstItem NIL) N S)
     )
 )

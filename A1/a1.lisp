@@ -7,7 +7,7 @@
 ; The function will return T if sorted, else it will return NIL
 ; A list with less than 2 elements is considered sorted.
 (defun issorted (L)
-    (if (OR (null L) (null cdr(L)) )
+    (if (OR (null L) (null (cdr L)) )
         T
         (if (< (car L) (cadr L))
             (and T (issorted (rest L)))
@@ -139,7 +139,7 @@
 )
 ;; if equal, keep current (would be leftmost item)
 ;; else replace with (cons (car S) (len (car s)))
-)
+
 
 ; (findLeastCommon L1 L2)
 ; This helper function finds the set with the least common 
@@ -183,7 +183,6 @@
     )
 )
 
-
 ; (findRest N S)
 ; A helper function finds subsets that fit in setcover.
 ; This function works by finding the subset with the 
@@ -196,7 +195,11 @@
     (if (equal current (numbers S)) 
         subsets
         
-        (let (LeastCommonSubset (findLeastCommon NIL (+ N 1) current S)))
+        (let* 
+            ((leastCommonSubset (findLeastCommon NIL (+ N 1) current S))
+            (combined (combineSets leastCommonSubset current)))
+            (findRest combined (cons subsets leastCommonSubset) N S)
+        )
     )
 )
 
@@ -204,8 +207,7 @@
 ; This function finds the set cover of a set of numbers from 1 to N
 ; given a list of subsets, S
 (defun setcover (N S)
-    ; combine the largest subset with everything else.
-    (let (firstItem (findFirst (car S) (len (car s)) S) 
+    (let ((firstItem (findFirst (car S) (len (car s)) S)))
         (findRest firstItem (cons firstItem NIL) N S)
     )
 )

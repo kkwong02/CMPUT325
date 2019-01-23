@@ -200,7 +200,11 @@
 ; This function finds the set cover of a set of numbers from 1 to N
 ; given a list of subsets, S
 (defun setcover (N S)
-    (let ((firstItem (findFirst (car S) (len (car S)) S)))
-        (findRest firstItem (cons firstItem NIL) N S)
+    (if 
+        (and (null S) (= 0 N))
+        NIL
+        (let ((firstItem (findFirst (car S) (len (car S)) S)))
+            (findRest firstItem (cons firstItem NIL) N S)
+        )
     )
 )

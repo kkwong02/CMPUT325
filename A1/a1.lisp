@@ -89,7 +89,10 @@
 
 ; (replace Atom1 Atom2 List)
 ; This function replaces occurances of Atom1 with Atom2 in a list.
-; Unlike replace1, this function will recursive replace atoms in nested lists.
+; Unlike replace1, this function will recursively replace atoms in nested lists.
+; The implementation of replace2 is identical to replace1, with the exception on
+; on extra conditional check for non-atom list items, where there is an additional call
+; to replace2 instead of either leaving or replacing the first element it the list.
 (defun replace2 (Atom1 Atom2 List)
     (cond
         ((null List) NIL)
@@ -100,9 +103,11 @@
 )
 
 ; QUESTION 5 common
-
 ; (common L1 L2)
 ; This function counts how many atoms L1 and L2 have in common.
+; This function works by recusively checking if the first element in L1
+; is in L2, if yes, it adds one to the result else, it adds zero. It then
+; continues with a recursive call using the rest of L1. 
 (defun common (L1 L2)
     (cond
         ((null L1) 0)
@@ -118,16 +123,81 @@
 ; if all are equal, it returns the first (left-most) subset.
 ; N is the length of the current largest subset.
 ; S is a list of subsets.
-(defun findFirst (N S) 
-
+; current is the current largest subset.
+(defun findFirst (current N S) 
+    (if (null S)
+        current
+        (let* 
+            ((firstItem (car S))
+            (lenFirst (len firstItem)))
+            (if (< N lenFirst) 
+                (findFirst firstItem lenFirst (cdr S))
+                (findFirst current N (cdr S))
+            )
+        )  
+    ) 
 )
+;; if equal, keep current (would be leftmost item)
+;; else replace with (cons (car S) (len (car s)))
+)
+
+; (findLeastCommon L1 L2)
+; This helper function finds the set with the least common 
+; elements of L. 
+; current: the curent set with the least common elements
+; currentCount: the count of common elements in between current and L
+; L a set of numbers we're finding the set of least common numbers for
+; S list of sets
+(defun findLeastCommon (current currentCount L S)
+    (if (null S)
+        current
+        (let* 
+            ((firstItem (car S))
+            (firstItemCount (common L firstItem)))
+            (if (> currentCount firstItemCount) 
+                (findLeastCommon firstItem firstItemCount L (cdr S))
+                (findLeastCommon current currentCount L (cdr S))
+            )
+        )
+    ) 
+)
+
+; (insert L item)
+; inserts an item into a sorted list.
+; TODO: add a condition for last item in L.
+(defun insert (L item) 
+    (cond 
+        ((null (car L)) (cons item L))
+        ((> item (car L)) (cons (car L) (insert (cdr L) item)))
+        (T (cons item L))
+    )
+)
+
+; (combineSets (L1 L2))
+; This helper functions combines the two lists in a ascending order.
+; It assumes that both lists are sorted to begin with.
+(defun combineSets (L1 L2)
+    (if (null L2) 
+        L1
+        (combineSets (insert L1 (car L2)) (cdr L2))
+    )
+)
+
 
 ; (findRest N S)
 ; A helper function finds subsets that fit in setcover.
 ; This function works by finding the subset with the 
 ; least amount of items in common with the
-(defun findRest (current N S)
-
+; current: the current set
+; subsets: the subsets that make up the set
+; N: from setCover
+; S: from setCover
+(defun findRest (current subsets N S)
+    (if (equal current (numbers S)) 
+        subsets
+        
+        (let (LeastCommonSubset (findLeastCommon NIL (+ N 1) current S)))
+    )
 )
 
 ; (setCover N S)
@@ -135,7 +205,7 @@
 ; given a list of subsets, S
 (defun setcover (N S)
     ; combine the largest subset with everything else.
-    (let (firstItem (findFirst N S) 
-        (findRest firstItem N S)
+    (let (firstItem (findFirst (car S) (len (car s)) S) 
+        (findRest firstItem (cons firstItem NIL) N S)
     )
 )

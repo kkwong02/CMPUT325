@@ -165,13 +165,13 @@
 ; N: from setCover
 ; S: from setCover
 (defun findRest (current subsets N S)
-    (if (equal current (numbers S)) 
+    (if (equal current (numbers N)) 
         subsets
         
         (let* 
             ((leastCommonSubset (findLeastCommon NIL (+ N 1) current S))
             (combined (combineSets leastCommonSubset current)))
-            (findRest combined (cons subsets leastCommonSubset) N S)
+            (findRest combined (append subsets (list leastCommonSubset)) N S)
         )
     )
 )
